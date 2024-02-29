@@ -1,0 +1,14 @@
+public class #SCRIPTNAME# : Popup
+{
+    public override void Open(object obj)
+    {
+        base.Open(obj);
+    }
+    #NOTRIM#
+    #region UI Events
+    public void OnClickClose()
+    {
+        Close();
+    }
+    #endregion
+}

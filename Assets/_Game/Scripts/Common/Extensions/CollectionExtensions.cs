@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+
+public static class CollectionExtensions
+{
+    #region ARRAY & LIST
+    /// <summary>
+    /// Shuffle an array or a list
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="ts"></param>
+    public static void Shuffle<T>(this IList<T> ts)
+    {
+        Random random = new Random();
+
+        int i = ts.Count;
+        int j;
+
+        while (i > 1)
+        {
+            i--;
+            j = random.Next(i + 1);
+            T t = ts[j];
+            ts[j] = ts[i];
+            ts[i] = t;
+        }
+    }
+
+    public static T Last<T>(this IList<T> ts)
+    {
+        return ts[ts.Count - 1];
+    }
+
+    public static void Rotate<T>(this List<T> list, int position)
+    {
+        int count = list.Count;
+        position = position % count;
+
+        if (position == 0) return;
+
+        if (position < 0) position += count;
+
+        list.Reverse();
+        list.Reverse(0, position);
+        list.Reverse(position, count - position);
+    }
+
+    /// <summary>
+    /// Generates all combinations of size <paramref name="k"/> from the elements of the <paramref name="list"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the list.</typeparam>
+    /// <param name="list">The input list from which combinations are generated.</param>
+    /// <param name="k">The size of combinations to be generated.</param>
+    /// <returns>A list containing all combinations of size <paramref name="k"/> from the input list.</returns>
+    public static List<List<T>> GetCombinations<T>(this List<T> list, int k)
+    {
+        List<List<T>> result = new List<List<T>>();
+        List<T> currentCombination = new List<T>();
+
+        GenerateCombinations(list, k, 0, currentCombination, result);
+        return result;
+    }
+
+    /// <summary>
+    /// Helper method to generate combinations recursively.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the list.</typeparam>
+    /// <param name="list">The input list from which combinations are generated.</param>
+    /// <param name="k">The size of combinations to be generated.</param>
+    /// <param name="startIndex">The index to start generating combinations from in the <paramref name="list"/>.</param>
+    /// <param name="currentCombination">The current combination being constructed.</param>
+    /// <param name="result">The list to store all generated combinations.</param>
+    private static void GenerateCombinations<T>(List<T> list, int k, int startIndex, List<T> currentCombination, List<List<T>> result)
+    {
+        if (currentCombination.Count == k)
+        {
+            result.Add(new List<T>(currentCombination));
+            return;
+        }
+
+        for (int i = startIndex; i < list.Count; i++)
+        {
+            currentCombination.Add(list[i]);
+            GenerateCombinations(list, k, i + 1, currentCombination, result);
+            currentCombination.RemoveAt(currentCombination.Count - 1);
+        }
+    }
+    #endregion
+}
