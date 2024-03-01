@@ -4,8 +4,8 @@ namespace AbstractStateMachine
 {
     public abstract class BaseState<T> where T : MonoBehaviour
     {
-        public abstract void EnterState(T t);
-        public abstract void UpdateState(T t);
-        public abstract void ExitState(T t);
+        public abstract void Enter(T t);
+        public abstract void Update(T t);
+        public abstract void Exit(T t);
     }
 }

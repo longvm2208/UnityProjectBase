@@ -1,21 +1,18 @@
 using UnityEngine;
 
-namespace ObjectPooling.InstancePool.Example
+public class PrefabInstancePoolExample : MonoBehaviour
 {
-    public class PrefabInstancePoolExample : MonoBehaviour
+    private PrefabInstancePool<PrefabInstancePoolExample> pool;
+
+    public PrefabInstancePoolExample Spawn()
     {
-        private PrefabInstancePool<PrefabInstancePoolExample> pool;
+        PrefabInstancePoolExample instance = pool.GetInstance(this);
+        instance.pool = pool;
+        return instance;
+    }
 
-        public PrefabInstancePoolExample Spawn()
-        {
-            PrefabInstancePoolExample instance = pool.GetInstance(this);
-            instance.pool = pool;
-            return instance;
-        }
-
-        public void Despawn()
-        {
-            pool.Recycle(this);
-        }
+    public void Despawn()
+    {
+        pool.Recycle(this);
     }
 }

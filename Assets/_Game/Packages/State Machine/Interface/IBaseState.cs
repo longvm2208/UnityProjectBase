@@ -1,4 +1,3 @@
-
 namespace InterfaceStateMachine
 {
     public interface IBaseState<T>
