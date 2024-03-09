@@ -1,8 +1,8 @@
+using UnityEditor;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-//using UnityEditor.AddressableAssets.Settings;
-using UnityEditor;
 
 public class CustomBuildProcessor : IPreprocessBuildWithReport
 {
@@ -32,15 +32,15 @@ public class CustomBuildProcessor : IPreprocessBuildWithReport
             Debug.Log("Play test mode is disabled");
         }
 
-        //string path = "Assets/AddressableAssetsData/AddressableAssetSettings.asset";
-        //var settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>(path);
-        //if (settings.ActivePlayModeDataBuilderIndex == 2)
-        //{
-        //    Debug.Log("Addressables - Play Mode Script: Use Existing Build");
-        //}
-        //else
-        //{
-        //    Debug.LogError("Addressables - Play Mode Script: Use Asset Database");
-        //}
+        string path = "Assets/AddressableAssetsData/AddressableAssetSettings.asset";
+        var settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>(path);
+        if (settings.ActivePlayModeDataBuilderIndex == 2)
+        {
+            Debug.Log("Addressables - Play Mode Script: Use Existing Build");
+        }
+        else
+        {
+            Debug.LogError("Addressables - Play Mode Script: Use Asset Database");
+        }
     }
 }

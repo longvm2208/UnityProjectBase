@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 
-public abstract class Popup : MonoBehaviour
+public abstract class PopupBase : MonoBehaviour
 {
     [SerializeField]
-    protected Transform myTransform;
+    protected RectTransform myTransform;
 
-    public virtual void Open(object obj = null)
+    public event Action Closed;
+
+    public virtual void Open(object args = null)
     {
         gameObject.SetActive(true);
         myTransform.SetAsLastSibling();
@@ -13,12 +16,12 @@ public abstract class Popup : MonoBehaviour
 
     public virtual void Close()
     {
+        Closed?.Invoke();
         gameObject.SetActive(false);
-        UIManager.Instance.OnPopupClosed();
     }
 
     public bool IsActive()
     {
-        return gameObject.activeInHierarchy;
+        return gameObject.activeSelf;
     }
 }

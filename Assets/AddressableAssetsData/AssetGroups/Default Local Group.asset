@@ -16,7 +16,19 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 4d56fab2b2b2f5e4983396513831c1ed
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 2c47261d4ad80904791f45552528daee
+    m_Address: Assets/_Game/Prefabs/UI/Popups/Popup Win.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 31e389e5a0e8b5f47a9503f4354f6dae
+    m_Address: Assets/_Game/Prefabs/UI/Popups/Popup Lose.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c818b09e7124a114099a16d07fea0074
+    m_Address: Assets/_Game/Sprites/square_1x1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 17e4eadf8a21c6543a70ce40950f164e, type: 2}
   m_SchemaSet:

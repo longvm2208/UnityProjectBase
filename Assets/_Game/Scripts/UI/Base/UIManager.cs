@@ -4,29 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Longvm;
-
-[System.Serializable]
-public class TestDictionary : SerializedDictionary<PopupId, AssetReferenceGameObject> { }
 
 public class UIManager : SingletonMonoBehaviour<UIManager>
 {
     [SerializeField]
-    private Transform popupParent;
-    [SerializeField]
     private GameObject blocker;
     [SerializeField]
-    private Panel panel;
-    [SerializeField, ExposedScriptableObject]
-    private PopupConfigContainer container;
+    private PanelBase panel;
     [SerializeField]
-    private TestDictionary test;
+    private Transform popupParent;
+    [SerializeField, ExposedScriptableObject]
+    private PopupContainer container;
 
     private int popupWordLength = "popup".Length;
     private int blockCount = 0;
     private int popupOpenCount = 0;
-    private Dictionary<PopupId, Popup> popupById = new();
-    private List<AsyncOperationHandle<GameObject>> operationHandles = new();
+    private Dictionary<PopupId, PopupBase> popupById;
+    private List<AsyncOperationHandle<GameObject>> operationHandles;
 
     private void OnDestroy()
     {
@@ -41,11 +35,15 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
 
     public void DisableBlocker()
     {
-        if (--blockCount < 0) blockCount = 0;
+        if (--blockCount < 0)
+        {
+            blockCount = 0;
+        }
+
         blocker.SetActive(blockCount > 0);
     }
 
-    public T Panel<T>() where T : Panel => panel as T;
+    public T Panel<T>() where T : PanelBase => panel as T;
 
     #region POPUP
     public bool HaveOpenPopup()
@@ -53,7 +51,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         return popupOpenCount > 0;
     }
 
-    private bool IsPopupInstantiated(PopupId id)
+    public bool IsPopupInstantiated(PopupId id)
     {
         return popupById.ContainsKey(id) && popupById[id] != null;
     }
@@ -68,6 +66,12 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         return !container[id].IsDone;
     }
 
+    public T Popup<T>() where T : PopupBase
+    {
+        PopupId id = GetIdFromType(typeof(T));
+        return Popup<T>(id);
+    }
+
     private PopupId GetIdFromType(Type type)
     {
         if (Enum.TryParse(type.Name.Remove(0, popupWordLength), out PopupId id))
@@ -79,13 +83,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         return PopupId.None;
     }
 
-    public T Popup<T>() where T : Popup
-    {
-        PopupId id = GetIdFromType(typeof(T));
-        return Popup<T>(id);
-    }
-
-    private T Popup<T>(PopupId id) where T : Popup
+    private T Popup<T>(PopupId id) where T : PopupBase
     {
         if (id == PopupId.None) return null;
 
@@ -101,55 +99,69 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     }
 
     [Button(ButtonStyle.FoldoutButton)]
-    public void OpenPopup(PopupId id, object obj = null)
+    public void OpenPopup(PopupId id, object args = null)
     {
+        if (popupById == null || operationHandles == null)
+        {
+            popupById = new Dictionary<PopupId, PopupBase>();
+            operationHandles = new List<AsyncOperationHandle<GameObject>>();
+        }
+
         popupOpenCount++;
 
         if (IsPopupInstantiated(id))
         {
-            Popup popup = popupById[id];
+            PopupBase popup = popupById[id];
+
             if (popup.IsActive())
             {
                 Debug.LogWarning($"Popup {id} is opening");
                 return;
             }
-            popup.Open(obj);
+
+            popup.Open(args);
         }
         else
         {
-            InstantiatePopup(id, obj);
+            InstantiatePopup(id, args);
         }
     }
 
-    private void InstantiatePopup(PopupId id, object obj = null)
+    private void InstantiatePopup(PopupId id, object args = null)
     {
         var reference = container[id];
 
         if (reference == null)
         {
-            Debug.LogError("Reference is null");
+            Debug.LogError($"Reference is null: {id}");
             return;
         }
 
         if (!reference.IsDone)
         {
-            Debug.LogWarning("Loading asset");
+            Debug.LogWarning($"Loading asset: {id}");
             return;
         }
 
         var operationHandle = reference.LoadAssetAsync();
         operationHandles.Add(operationHandle);
 
-        blocker.SetActive(true);
+        EnableBlocker();
 
         operationHandle.Completed += (handle) =>
         {
-            blocker.SetActive(false);
+            DisableBlocker();
 
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                Popup popup = Instantiate(handle.Result, popupParent).GetComponent<Popup>();
-                popup.Open(obj);
+                PopupBase popup = Instantiate(handle.Result, popupParent).GetComponent<PopupBase>();
+                popup.Open(args);
+
+                popup.Closed += () =>
+                {
+                    popupOpenCount--;
+                };
+
                 popupById[id] = popup;
             }
             else
@@ -157,11 +169,6 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
                 Debug.LogError($"Cannot load asset: {handle.Status}");
             }
         };
-    }
-
-    public void OnPopupClosed()
-    {
-        popupOpenCount--;
     }
 
     private void ReleasePopupReference()
@@ -175,4 +182,3 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     }
     #endregion
 }
-

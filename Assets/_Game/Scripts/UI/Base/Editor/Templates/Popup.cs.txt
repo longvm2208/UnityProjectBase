@@ -1,8 +1,8 @@
-public class #SCRIPTNAME# : Popup
+public class #SCRIPTNAME# : PopupBase
 {
-    public override void Open(object obj)
+    public override void Open(object args)
     {
-        base.Open(obj);
+        base.Open(args);
     }
     #NOTRIM#
     #region UI Events

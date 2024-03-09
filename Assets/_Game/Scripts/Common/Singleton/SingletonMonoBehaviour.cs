@@ -19,7 +19,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
 
             if (instance == null)
             {
-                GameObject obj = new GameObject(typeof(T).Name + "_Lazy");
+                GameObject obj = new GameObject(typeof(T).Name + " Lazy Load");
                 instance = obj.AddComponent<T>();
             }
 

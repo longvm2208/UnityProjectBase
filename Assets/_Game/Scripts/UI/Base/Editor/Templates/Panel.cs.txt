@@ -1,4 +1,4 @@
-public class #SCRIPTNAME# : Panel
+public class #SCRIPTNAME# : PanelBase
 {
     #NOTRIM#
     #region UI Events
