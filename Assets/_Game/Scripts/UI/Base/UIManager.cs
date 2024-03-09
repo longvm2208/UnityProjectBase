@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Longvm;
+
+[System.Serializable]
+public class TestDictionary : SerializedDictionary<PopupId, AssetReferenceGameObject> { }
 
 public class UIManager : SingletonMonoBehaviour<UIManager>
 {
@@ -15,6 +19,8 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     private Panel panel;
     [SerializeField, ExposedScriptableObject]
     private PopupConfigContainer container;
+    [SerializeField]
+    private TestDictionary test;
 
     private int popupWordLength = "popup".Length;
     private int blockCount = 0;

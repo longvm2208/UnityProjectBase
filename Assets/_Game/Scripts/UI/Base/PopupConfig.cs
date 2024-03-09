@@ -1,11 +1,13 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public struct PopupConfig
 {
-    [SerializeField] private PopupId id;
+    [SerializeField, HorizontalGroup("row")]
+    private PopupId id;
     [SerializeField] private AssetReferenceGameObject reference;
 
     public PopupId Id => id;

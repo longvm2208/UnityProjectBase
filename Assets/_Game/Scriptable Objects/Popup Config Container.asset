@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a73e2fd9219ab448d8a8c2f86ec784, type: 3}
   m_Name: Popup Config Container
   m_EditorClassIdentifier: 
-  popupConfigs: []
+  popupConfigs:
+  - id: 1
+    reference:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
