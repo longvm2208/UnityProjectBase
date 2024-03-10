@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ZoomCamera : MonoBehaviour
+public class CameraZoom : MonoBehaviour
 {
     [SerializeField]
     private Camera myCamera;
@@ -28,11 +28,14 @@ public class ZoomCamera : MonoBehaviour
 
     private void Zooming()
     {
-#if UNITY_EDITOR
-        ZoomingPc();
-#else
-        ZoomingMobile();
-#endif
+        if (Application.isEditor)
+        {
+            ZoomingPc();
+        }
+        else
+        {
+            ZoomingMobile();
+        }
     }
 
     private void ZoomingPc()
