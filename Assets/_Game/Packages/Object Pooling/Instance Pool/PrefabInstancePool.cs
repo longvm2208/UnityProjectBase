@@ -42,7 +42,10 @@ public struct PrefabInstancePool<T> where T : MonoBehaviour
             return;
         }
 #endif
-        pool.Push(instance);
-        instance.gameObject.SetActive(false);
+        if (!pool.Contains(instance))
+        {
+            pool.Push(instance);
+            instance.gameObject.SetActive(false);
+        }
     }
 }

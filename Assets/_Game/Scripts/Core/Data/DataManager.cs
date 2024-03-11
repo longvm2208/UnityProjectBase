@@ -4,7 +4,6 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
 {
     private const string Key = "GameData";
 
-    [Header("PERSISTENT DATA")]
     public GameData gameData;
 
     private bool isLoaded;
