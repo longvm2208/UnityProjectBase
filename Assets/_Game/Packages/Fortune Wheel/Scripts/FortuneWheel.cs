@@ -14,14 +14,16 @@ public class FortuneWheel : MonoBehaviour
     [SerializeField]
     private int[] probabilities;
 
-    [Button]
+    [Button(ButtonStyle.FoldoutButton)]
     public void StartSpinning(Action<int> onComplete)
     {
-        int index = probabilities.WeightedRandomSelection();
+        int index = probabilities.SelectWeightedRandomIndex();
         Vector3 rotation = (spinCount + (float)index / probabilities.Length) * 360f * Vector3.forward;
         wheelTransform.DOLocalRotate(rotation, spinDuration, RotateMode.FastBeyond360).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             onComplete?.Invoke(index);
         });
+
+        Debug.Log(index);
     }
 }

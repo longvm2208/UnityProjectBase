@@ -1,8 +1,29 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class CollectionExtensions
 {
+    /// <summary>
+    /// Determines whether a collection is null or has no elements without having to enumerate the entire collection to get a count.<br/>
+    /// Uses LINQ's Any() method to determine if the collection is empty, so there is some GC overhead.
+    /// </summary>
+    /// <param name="list">List to evaluate</param>
+    public static bool IsNullOrEmpty<T>(this IList<T> list)
+    {
+        return list == null || !list.Any();
+    }
+
+    /// <summary>
+    /// Swaps two elements in the list at the specified indices.
+    /// </summary>
+    /// <param name="list">The list.</param>
+    /// <param name="indexA">The index of the first element.</param>
+    /// <param name="indexB">The index of the second element.</param>
+    public static void Swap<T>(this IList<T> list, int indexA, int indexB)
+    {
+        (list[indexA], list[indexB]) = (list[indexB], list[indexA]);
+    }
+
     /// <summary>
     /// Shuffle an array or a list
     /// </summary>
@@ -85,7 +106,7 @@ public static class CollectionExtensions
         }
     }
 
-    public static int WeightedRandomSelection(this IList<int> probabilities)
+    public static int SelectWeightedRandomIndex(this IList<int> probabilities)
     {
         int totalWeight = 0;
 

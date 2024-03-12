@@ -77,20 +77,19 @@ public static class TransformExtensions
     }
     #endregion
 
-    public static void ClearAllChildren(this Transform transform)
+    public static void DestroyChildren(this Transform parent)
     {
-        if (transform.childCount == 0) return;
-
-        foreach (Transform child in transform)
+        foreach (Transform child in parent)
         {
-            if (Application.isPlaying)
-            {
-                Object.Destroy(child.gameObject);
-            }
-            else
-            {
-                Object.DestroyImmediate(child.gameObject);
-            }
+            Object.Destroy(child.gameObject);
+        }
+    }
+
+    public static void DestroyChildrenImmediate(this Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Object.DestroyImmediate(child.gameObject);
         }
     }
 }
