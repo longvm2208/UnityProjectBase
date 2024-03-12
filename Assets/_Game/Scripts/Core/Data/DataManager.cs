@@ -4,11 +4,13 @@ public class DataManager : SingletonMonoBehaviour<DataManager>
 {
     private const string Key = "GameData";
 
-    public GameData gameData;
+    [SerializeField]
+    private GameData gameData;
 
     private bool isLoaded;
 
     public bool IsLoaded => isLoaded;
+    public GameData GameData => gameData;
 
     private void OnApplicationPause(bool pause)
     {

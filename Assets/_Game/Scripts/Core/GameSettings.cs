@@ -1,8 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Game Settings")]
-public class GameSettings : ScriptableObject
+public class GameSettings : SingletonScriptableObject<GameSettings>
 {
-    public bool isEnableAds = true;
-    public bool isPlayTest = false;
+    public bool IsEnableAds = true;
 }

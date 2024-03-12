@@ -1,4 +1,10 @@
+using System;
 using UnityEngine;
+
+[Serializable]
+public class MusicByIdDictionary : SerializedDictionary<MusicId, AudioClip> { }
+[Serializable]
+public class SoundByIdDictionary : SerializedDictionary<SoundId, AudioClip> { }
 
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
@@ -7,27 +13,27 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     [SerializeField]
     private AudioSource soundSource;
     [SerializeField]
-    private AudioClip[] musicClips;
+    private MusicByIdDictionary musicById;
     [SerializeField]
-    private AudioClip[] soundClips;
+    private SoundByIdDictionary soundById;
 
     private AudioData audioData;
 
     public void Initialize()
     {
-        audioData = DataManager.Instance.gameData.audio;
+        audioData = DataManager.Instance.GameData.Audio;
         ToggleAudioSource();
     }
 
     public void ToggleAudioSource()
     {
-        musicSource.enabled = audioData.isMusicEnabled;
-        soundSource.enabled = audioData.isSoundEnabled;
+        musicSource.enabled = audioData.IsMusicEnabled;
+        soundSource.enabled = audioData.IsSoundEnabled;
     }
 
     public void PlayMusic(MusicId id)
     {
-        musicSource.clip = musicClips[(int)id];
+        musicSource.clip = musicById[id];
         musicSource.Play();
     }
 
@@ -39,13 +45,13 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
             soundSource.Stop();
         }
 
-        soundSource.PlayOneShot(soundClips[(int)id]);
+        soundSource.PlayOneShot(soundById[id]);
     }
 
     public void PlaySound(SoundId id, float duration)
     {
         soundSource.loop = true;
-        soundSource.clip = soundClips[(int)id];
+        soundSource.clip = soundById[id];
         soundSource.Play();
 
         ScheduleUtils.DelayTask(duration, () =>
@@ -61,13 +67,15 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
 public enum MusicId
 {
-    [HideInInspector] None = -1,
+    [HideInInspector]
+    None = -1,
     Home = 0,
     Game = 1,
 }
 
 public enum SoundId
 {
-    [HideInInspector] None = -1,
+    [HideInInspector]
+    None = -1,
     Click = 0,
 }

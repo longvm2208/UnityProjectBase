@@ -3,7 +3,7 @@ using UnityEditor.SceneManagement;
 
 public class SceneSwitcher
 {
-    private const string PATH_TO_SCENES_FOLDER = "Assets/_Game/Scenes/";
+    private const string ScenesFolderPath = "Assets/_Game/Scenes/";
 
     [MenuItem("Scenes/Load #1")]
     public static void OpenLoad()
@@ -57,12 +57,12 @@ public class SceneSwitcher
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
-            EditorSceneManager.OpenScene(PATH_TO_SCENES_FOLDER + sceneName + ".unity");
+            EditorSceneManager.OpenScene(ScenesFolderPath + sceneName + ".unity");
         }
     }
 
     private static bool OpenSceneValidate(string sceneName)
     {
-        return System.IO.File.Exists(PATH_TO_SCENES_FOLDER + sceneName + ".unity");
+        return System.IO.File.Exists(ScenesFolderPath + sceneName + ".unity");
     }
 }

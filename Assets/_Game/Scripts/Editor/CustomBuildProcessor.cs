@@ -12,24 +12,13 @@ public class CustomBuildProcessor : IPreprocessBuildWithReport
     {
         PlayerPrefs.DeleteAll();
 
-        GameSettings gameSettings = Resources.Load<GameSettings>("GameSettings");
-
-        if (gameSettings.isEnableAds)
+        if (GameSettings.Instance.IsEnableAds)
         {
             Debug.Log("Ads is enabled");
         }
         else
         {
             Debug.LogError("Ads is disabled");
-        }
-
-        if (gameSettings.isPlayTest)
-        {
-            Debug.LogError("Play test mode is enabled");
-        }
-        else
-        {
-            Debug.Log("Play test mode is disabled");
         }
 
         string path = "Assets/AddressableAssetsData/AddressableAssetSettings.asset";

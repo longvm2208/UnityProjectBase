@@ -1,12 +1,8 @@
-[System.Serializable]
+using System;
+
+[Serializable]
 public class AudioData
 {
-    public bool isMusicEnabled;
-    public bool isSoundEnabled;
-
-    public AudioData()
-    {
-        isMusicEnabled = true;
-        isSoundEnabled = true;
-    }
+    public bool IsMusicEnabled = true;
+    public bool IsSoundEnabled = true;
 }

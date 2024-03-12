@@ -263,12 +263,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData:
-    isVibrationEnabled: 0
-    currency:
-      coinAmount: 0
-    audio:
-      isMusicEnabled: 1
-      isSoundEnabled: 1
+    Audio:
+      IsMusicEnabled: 1
+      IsSoundEnabled: 1
+    Common:
+      IsVibrationEnabled: 1
+    Currency:
+      CoinAmount: 0
+    Level:
+      Index: 0
 --- !u!1 &7584333610873159385
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,8 +448,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 7584333610873159367}
   soundSource: {fileID: 7584333610439895771}
-  musicClips: []
-  soundClips: []
+  musicById:
+    keys: 0000000001000000
+    values:
+    - {fileID: 8300000, guid: 9ff464d3df7167747860b9aa2cd38309, type: 3}
+    - {fileID: 8300000, guid: 3ea392d309d4a53448a868a0d7d3d8b9, type: 3}
+  soundById:
+    keys: 00000000
+    values:
+    - {fileID: 8300000, guid: 335a53b855a3749458291e8673112c2a, type: 3}
 --- !u!1 &7584333611060911357
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +550,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7e1f152a3725f4c828486345140433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 6a978c6923e139349b15848712c2a442, type: 2}
+  config:
+    AppOpenAd:
+      IsShowOnSwitch: 0
+      ShowOnOpen: 0
+    Common:
+      WinCoinReward: 0
+    InterstitialAd:
+      EnableLevel: 0
+      Capping: 0
 --- !u!1001 &7584333609653094228
 PrefabInstance:
   m_ObjectHideFlags: 0

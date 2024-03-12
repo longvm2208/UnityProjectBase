@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public static class CollectionExtensions
 {
-    #region ARRAY & LIST
     /// <summary>
     /// Shuffle an array or a list
     /// </summary>
@@ -11,7 +10,7 @@ public static class CollectionExtensions
     /// <param name="ts"></param>
     public static void Shuffle<T>(this IList<T> ts)
     {
-        Random random = new Random();
+        System.Random random = new System.Random();
 
         int i = ts.Count;
         int j;
@@ -85,5 +84,29 @@ public static class CollectionExtensions
             currentCombination.RemoveAt(currentCombination.Count - 1);
         }
     }
-    #endregion
+
+    public static int WeightedRandomSelection(this IList<int> probabilities)
+    {
+        int totalWeight = 0;
+
+        for (int i = 0; i < probabilities.Count; i++)
+        {
+            totalWeight += probabilities[i];
+        }
+
+        int randomValue = UnityEngine.Random.Range(0, totalWeight);
+        int cumulativeWeight = 0;
+
+        for (int i = 0; i < probabilities.Count; i++)
+        {
+            cumulativeWeight += probabilities[i];
+
+            if (randomValue < cumulativeWeight)
+            {
+                return i;
+            }
+        }
+
+        return UnityEngine.Random.Range(0, probabilities.Count);
+    }
 }

@@ -7,7 +7,6 @@ public class CoreObject : MonoBehaviour
     private void Awake()
     {
         DestroyIfNeeded();
-
         DontDestroyOnLoad(gameObject);
     }
 
@@ -22,16 +21,16 @@ public class CoreObject : MonoBehaviour
                 Debug.Log("Destroy duplicated core object");
                 Destroy(gameObject);
             }
-
-            return;
         }
-
-        Scene scene = SceneManager.GetActiveScene();
-
-        if (!Enum.TryParse(scene.name, out SceneId sceneId) || sceneId != SceneId.Load)
+        else
         {
-            Debug.LogError("The core object should not exist in other scenes except the loading scene");
-            Destroy(gameObject);
+            Scene scene = SceneManager.GetActiveScene();
+
+            if (!Enum.TryParse(scene.name, out SceneId sceneId) || sceneId != SceneId.Load)
+            {
+                Debug.LogError("The core object should not exist in other scenes except the loading scene");
+                Destroy(gameObject);
+            }
         }
     }
 }
