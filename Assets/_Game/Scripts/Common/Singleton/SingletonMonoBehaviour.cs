@@ -27,7 +27,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
         }
     }
 
-    public static bool HaveInstance()
+    public static bool HasInstance()
     {
         return instance != null;
     }
