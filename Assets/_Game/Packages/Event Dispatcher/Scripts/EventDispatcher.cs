@@ -1,54 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class EventDispatcher : SingletonMonoBehaviour<EventDispatcher>
+/// <summary>
+/// Provides functionality to manage event listeners and dispatch events.
+/// </summary>
+public class EventDispatcher
 {
-    private Dictionary<EventId, Action<object>> _listeners = new();
+    private static Dictionary<EventId, Action<object>> eventListeners = new();
 
-    public void RegisterListener(EventId eventId, Action<object> callback)
+    /// <summary>
+    /// Registers a listener for a specified event.
+    /// </summary>
+    /// <param name="eventId">The ID of the event to register the listener for.</param>
+    /// <param name="callback">The callback method to be invoked when the event occurs.</param>
+    public static void RegisterListener(EventId eventId, Action<object> callback)
     {
-        if (!_listeners.ContainsKey(eventId))
+        if (!eventListeners.ContainsKey(eventId))
         {
-            _listeners.Add(eventId, null);
+            eventListeners.Add(eventId, null);
         }
 
-        _listeners[eventId] += callback;
+        eventListeners[eventId] += callback;
     }
 
-    public void PostEvent(EventId eventId, object param = null)
+    /// <summary>
+    /// Unregisters a listener from a specified event.
+    /// </summary>
+    /// <param name="eventId">The ID of the event to unregister the listener from.</param>
+    /// <param name="callback">The callback method to be unregistered.</param>
+    public static void UnregisterListener(EventId eventId, Action<object> callback)
     {
-        if (!_listeners.ContainsKey(eventId))
+        if (eventListeners.ContainsKey(eventId))
+        {
+            eventListeners[eventId] -= callback;
+        }
+    }
+
+    /// <summary>
+    /// Dispatches a specified event with an optional parameter.
+    /// </summary>
+    /// <param name="eventId">The ID of the event to dispatch.</param>
+    /// <param name="parameter">Optional parameter to be passed to the event listeners.</param>
+    public static void DispatchEvent(EventId eventId, object parameter = null)
+    {
+        if (!eventListeners.ContainsKey(eventId))
         {
             return;
         }
 
-        var callback = _listeners[eventId];
+        if (eventListeners[eventId] == null)
+        {
+            eventListeners.Remove(eventId);
+        }
 
-        if (callback != null)
-        {
-            callback(param);
-        }
-        else
-        {
-            _listeners.Remove(eventId);
-        }
+        eventListeners[eventId].Invoke(parameter);
     }
 
-    public void RemoveListener(EventId eventId, Action<object> callback)
+    /// <summary>
+    /// Clears all registered listeners for all events.
+    /// </summary>
+    public void ClearAllListeners()
     {
-        if (_listeners.ContainsKey(eventId))
-        {
-            _listeners[eventId] -= callback;
-        }
-    }
-
-    public void ClearAllListener()
-    {
-        _listeners.Clear();
+        eventListeners.Clear();
     }
 }
-
-//public static class EventDispatcherExtension
-//{
-//    public 
-//}

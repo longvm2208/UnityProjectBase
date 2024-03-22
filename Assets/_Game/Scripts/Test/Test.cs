@@ -3,5 +3,20 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public int abc;
+    [Button]
+    public void Register()
+    {
+        EventDispatcher.RegisterListener(EventId.Example, TestMethod);
+    }
+
+    [Button]
+    public void Unregister()
+    {
+        EventDispatcher.UnregisterListener(EventId.Example, TestMethod);
+    }
+
+    private void TestMethod(object args)
+    {
+        Debug.Log((int)args);
+    }
 }
